@@ -3,43 +3,285 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Affiliate Studio</title>
+<title>Affiliate Studio — Post, schedule & analyze TikTok affiliate content</title>
+<meta name="description" content="Affiliate Studio is a content publishing and market-research tool for TikTok affiliate creators. Upload and schedule videos through the official TikTok Content Posting API, scan high-commission products, and analyze market trends with Market Radar.">
+<meta property="og:title" content="Affiliate Studio">
+<meta property="og:description" content="Publishing & market-research tool for TikTok affiliate creators.">
+<meta property="og:type" content="website">
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#0b0e14;color:#e7ecf5;line-height:1.6}
-.wrap{max-width:760px;margin:0 auto;padding:64px 24px}
-.logo{display:inline-flex;align-items:center;gap:12px;font-weight:800;font-size:22px;margin-bottom:8px}
-.dot{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#ff2d55,#25f4ee);display:grid;place-items:center;font-size:18px}
-h1{font-size:34px;margin:28px 0 12px}
-p.lead{font-size:17px;color:#aeb8cc}
-.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:36px 0}
-.card{background:#141925;border:1px solid #262f43;border-radius:14px;padding:20px}
-.card h3{margin:0 0 8px;font-size:16px}
-.card p{margin:0;color:#8a96ad;font-size:14px}
-.links{margin-top:40px;padding-top:24px;border-top:1px solid #262f43;font-size:14px}
-.links a{color:#25f4ee;margin-right:20px}
-footer{margin-top:40px;color:#5f6b82;font-size:13px}
+:root{--bg:#0b0e14;--panel:#141925;--panel2:#1c2333;--line:#262f43;--text:#e7ecf5;--muted:#8a96ad;--brand:#ff2d55;--brand2:#25f4ee;--good:#16c784;--warn:#ffb020;--chip:#222b3d}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1140px;margin:0 auto;padding:0 22px}
+.btn{display:inline-block;background:var(--brand);color:#fff;padding:13px 22px;border-radius:11px;font-weight:700;font-size:15px;cursor:pointer;border:0;transition:.15s}
+.btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn.ghost{background:var(--panel2);border:1px solid var(--line);color:var(--text)}
+.btn.sm{padding:9px 15px;font-size:14px}
+header{position:sticky;top:0;z-index:50;background:rgba(11,14,20,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:11px;font-weight:800;font-size:18px}
+.logo .dot{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;font-size:16px}
+.navlinks{display:flex;align-items:center;gap:26px;font-size:14.5px;color:var(--muted)}
+.navlinks a:hover{color:var(--text)}
+.navlinks .btn{color:#fff}
+@media(max-width:820px){.navlinks a:not(.btn){display:none}}
+.hero{position:relative;padding:84px 0 70px;text-align:center;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 60% at 50% 0%,rgba(255,45,85,.16),transparent 60%),radial-gradient(50% 50% at 80% 10%,rgba(37,244,238,.12),transparent 60%);pointer-events:none}
+.hero .tagpill{display:inline-block;background:var(--chip);border:1px solid var(--line);color:var(--brand2);padding:7px 15px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:22px}
+.hero h1{font-size:46px;line-height:1.12;font-weight:800;letter-spacing:-.5px;max-width:820px;margin:0 auto 18px}
+.hero h1 span{background:linear-gradient(120deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero p.sub{font-size:18px;color:var(--muted);max-width:640px;margin:0 auto 30px}
+.hero .cta{display:flex;gap:13px;justify-content:center;flex-wrap:wrap}
+.hero .micro{margin-top:16px;font-size:13px;color:var(--muted)}
+@media(max-width:640px){.hero h1{font-size:33px}.hero p.sub{font-size:16px}}
+section.blk{padding:66px 0;border-top:1px solid var(--line)}
+.eyebrow{color:var(--brand2);font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;text-align:center}
+.h2{font-size:32px;font-weight:800;text-align:center;margin-bottom:12px;letter-spacing:-.4px}
+.lead{color:var(--muted);text-align:center;max-width:640px;margin:0 auto 44px;font-size:16.5px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px}
+.card .ic{width:46px;height:46px;border-radius:12px;background:var(--panel2);display:grid;place-items:center;font-size:23px;margin-bottom:15px}
+.card h3{font-size:17.5px;margin-bottom:8px}
+.card p{color:var(--muted);font-size:14.5px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+@media(max-width:820px){.steps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.steps{grid-template-columns:1fr}}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;position:relative}
+.step .n{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;display:grid;place-items:center;font-weight:800;margin-bottom:13px}
+.step h3{font-size:16px;margin-bottom:6px}
+.step p{color:var(--muted);font-size:14px}
+.preview{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;max-width:920px;margin:0 auto;box-shadow:0 30px 80px rgba(0,0,0,.4)}
+.preview .bar{display:flex;gap:7px;padding:6px 6px 14px}
+.preview .bar i{width:11px;height:11px;border-radius:50%;background:var(--line)}
+.pv-grid{display:grid;grid-template-columns:200px 1fr;gap:14px}
+@media(max-width:640px){.pv-grid{grid-template-columns:1fr}.pv-side{display:none}}
+.pv-side{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:13px;color:var(--muted)}
+.pv-side .row{padding:9px 10px;border-radius:8px;margin-bottom:4px}
+.pv-side .row.on{background:linear-gradient(90deg,rgba(255,45,85,.18),transparent);color:var(--text);font-weight:600}
+.pv-main{display:grid;gap:12px}
+.pv-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:520px){.pv-cards{grid-template-columns:repeat(2,1fr)}}
+.pv-cards .c{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:13px}
+.pv-cards .c .k{font-size:11px;color:var(--muted)}
+.pv-cards .c .v{font-size:21px;font-weight:800;margin-top:3px}
+.pv-panel{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:15px}
+.pv-panel h4{font-size:13px;margin-bottom:12px;color:var(--muted)}
+.pv-line{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+.pv-line:last-child{border:0}
+.pv-line .op{font-weight:800;color:var(--good)}
+.scopes{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto}
+@media(max-width:640px){.scopes{grid-template-columns:1fr}}
+.scope{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+.scope code{background:var(--chip);border:1px solid var(--line);color:var(--brand2);padding:3px 9px;border-radius:7px;font-size:13px;font-weight:600}
+.scope p{color:var(--muted);font-size:14px;margin-top:9px}
+.faq{max-width:820px;margin:0 auto;display:grid;gap:12px}
+details{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 20px}
+details summary{cursor:pointer;font-weight:600;font-size:16px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:"+";color:var(--brand2);font-size:22px;font-weight:400}
+details[open] summary::after{content:"\2212"}
+details p{color:var(--muted);margin-top:12px;font-size:14.5px}
+.band{background:linear-gradient(120deg,rgba(255,45,85,.13),rgba(37,244,238,.09));border:1px solid var(--line);border-radius:20px;padding:44px 30px;text-align:center;margin:14px 0}
+.band h2{font-size:28px;font-weight:800;margin-bottom:10px}
+.band p{color:var(--muted);margin-bottom:22px}
+footer{border-top:1px solid var(--line);padding:44px 0 40px;color:var(--muted);font-size:14px}
+.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.foot a{color:var(--muted)}.foot a:hover{color:var(--text)}
+.foot .col h5{color:var(--text);font-size:13px;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.foot .col a{display:block;margin-bottom:8px}
+.copyright{border-top:1px solid var(--line);margin-top:30px;padding-top:22px;font-size:13px;text-align:center}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="logo"><span class="dot">⚡</span> Affiliate Studio</div>
-  <h1>Schedule and publish your TikTok content from one dashboard.</h1>
-  <p class="lead">Affiliate Studio is a content tool that lets creators upload, schedule, and publish videos to their own TikTok account, and manage affiliate product content — all in one place.</p>
 
-  <div class="features">
-    <div class="card"><h3>📤 Upload & Publish</h3><p>Upload videos or images and publish to your connected TikTok account.</p></div>
-    <div class="card"><h3>🗓️ Schedule Ahead</h3><p>Queue multiple posts in advance and publish them at the right time.</p></div>
-    <div class="card"><h3>🔍 Product Research</h3><p>Find high-commission, trending affiliate products to feature.</p></div>
-    <div class="card"><h3>🛍️ Affiliate Ready</h3><p>Attach products to posts or keep clips engagement-only.</p></div>
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="#top"><span class="dot">⚡</span> Affiliate Studio</a>
+      <div class="navlinks">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#permissions">Permissions</a>
+        <a href="#faq">FAQ</a>
+        <a class="btn sm" href="https://affiliate-studio-app.onrender.com" target="_blank" rel="noopener">Open Dashboard</a>
+      </div>
+    </nav>
   </div>
+</header>
 
-  <div class="links">
-    <a href="privacy.html">Privacy Policy</a>
-    <a href="terms.html">Terms of Service</a>
-    <a href="mailto:ecommerce.productions66@gmail.com">Contact</a>
+<a id="top"></a>
+<section class="hero">
+  <div class="wrap">
+    <span class="tagpill">Built for TikTok affiliate creators</span>
+    <h1>Publish, schedule, and <span>research</span> your TikTok affiliate content in one place</h1>
+    <p class="sub">Affiliate Studio helps creators upload and schedule content to TikTok through the official Content Posting API, find high-commission products, and read the market with a competitor-analysis dashboard.</p>
+    <div class="cta">
+      <a class="btn" href="https://affiliate-studio-app.onrender.com" target="_blank" rel="noopener">Open the Dashboard →</a>
+      <a class="btn ghost" href="#features">See features</a>
+    </div>
+    <div class="micro">Connect securely with TikTok Login Kit · No credit card · Your account, your content</div>
   </div>
-  <footer>© 2026 Affiliate Studio. All rights reserved.</footer>
-</div>
+</section>
+
+<section class="blk" id="features">
+  <div class="wrap">
+    <div class="eyebrow">What you get</div>
+    <h2 class="h2">Everything an affiliate creator needs</h2>
+    <p class="lead">A single dashboard that takes you from spotting a product, to making the post, to publishing it on TikTok — plus the market data to decide what to promote next.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="ic">🎵</div>
+        <h3>Publish to TikTok</h3>
+        <p>Upload videos to your TikTok account through the official Content Posting API. Send clips to your TikTok drafts to finish and publish, or direct-post once your app is approved.</p>
+      </div>
+      <div class="card">
+        <div class="ic">🗓️</div>
+        <h3>Schedule & queue</h3>
+        <p>Plan posts ahead of time. Build a queue with captions and hashtags so your content pipeline stays full without last-minute scrambling.</p>
+      </div>
+      <div class="card">
+        <div class="ic">🔍</div>
+        <h3>Product scanner</h3>
+        <p>Scan products by commission rate, ad intensity, brand awareness, and trend to quickly surface the items worth making content about.</p>
+      </div>
+      <div class="card">
+        <div class="ic">📡</div>
+        <h3>Market Radar</h3>
+        <p>A competitor-analysis view that combines trend momentum, commission, and ad pressure into a single picture of where the opportunities are.</p>
+      </div>
+      <div class="card">
+        <div class="ic">🎯</div>
+        <h3>Opportunity Score</h3>
+        <p>Every product gets a score from trend, commission, ad intensity, and how crowded it is — so you can spot “blue ocean” items before everyone else.</p>
+      </div>
+      <div class="card">
+        <div class="ic">🔐</div>
+        <h3>Secure TikTok login</h3>
+        <p>Sign in with TikTok's official OAuth 2.0. You stay in control of your account and can disconnect at any time to revoke access.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="blk" id="how">
+  <div class="wrap">
+    <div class="eyebrow">How it works</div>
+    <h2 class="h2">From product to published in four steps</h2>
+    <p class="lead">The whole workflow lives in one dashboard — no spreadsheets, no switching between five tools.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>Connect TikTok</h3><p>Authorize your account with TikTok Login Kit. We only request the permissions needed to post and show your profile.</p></div>
+      <div class="step"><div class="n">2</div><h3>Find a product</h3><p>Use the scanner and Market Radar to pick a high-opportunity product to promote.</p></div>
+      <div class="step"><div class="n">3</div><h3>Create the post</h3><p>Upload your clip, write the caption and hashtags, and attach the product.</p></div>
+      <div class="step"><div class="n">4</div><h3>Publish or schedule</h3><p>Send it to TikTok now or add it to your scheduled queue for later.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="blk">
+  <div class="wrap">
+    <div class="eyebrow">A look inside</div>
+    <h2 class="h2">The dashboard</h2>
+    <p class="lead">Overview, compose, scheduling, product scanner, and Market Radar — all in one clean workspace.</p>
+    <div class="preview">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="pv-grid">
+        <div class="pv-side">
+          <div class="row on">📊 Overview</div>
+          <div class="row">➕ Create post</div>
+          <div class="row">🗓️ Queue</div>
+          <div class="row">🔍 Scanner</div>
+          <div class="row">📡 Market Radar</div>
+        </div>
+        <div class="pv-main">
+          <div class="pv-cards">
+            <div class="c"><div class="k">In queue</div><div class="v">6</div></div>
+            <div class="c"><div class="k">Published</div><div class="v">128</div></div>
+            <div class="c"><div class="k">TikTok</div><div class="v" style="font-size:15px">Connected</div></div>
+            <div class="c"><div class="k">Hot picks</div><div class="v">4</div></div>
+          </div>
+          <div class="pv-panel">
+            <h4>Market Radar — top opportunities</h4>
+            <div class="pv-line"><span>Color-changing lip oil · VELVET</span><span class="op">Opp 88</span></div>
+            <div class="pv-line"><span>Single-sachet sunscreen · SunGuard</span><span class="op">Opp 82</span></div>
+            <div class="pv-line"><span>Desk mood light · LumiGlow</span><span class="op">Opp 79</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:26px;margin-bottom:0">Want to try it live? <a href="https://affiliate-studio-app.onrender.com" target="_blank" rel="noopener" style="color:var(--brand2);font-weight:600">Open the dashboard →</a></p>
+  </div>
+</section>
+
+<section class="blk" id="permissions">
+  <div class="wrap">
+    <div class="eyebrow">Transparency</div>
+    <h2 class="h2">TikTok permissions we use — and why</h2>
+    <p class="lead">Affiliate Studio only requests the scopes required to do exactly what you ask. Nothing more.</p>
+    <div class="scopes">
+      <div class="scope"><code>user.info.basic</code><p>Read your basic profile (open ID, avatar) so you can confirm which TikTok account you're posting to.</p></div>
+      <div class="scope"><code>user.info.profile</code><p>Show your display name and username in the dashboard for a clear posting experience.</p></div>
+      <div class="scope"><code>video.upload</code><p>Upload your video to your TikTok account — sent to your drafts/inbox for you to review and finish.</p></div>
+      <div class="scope"><code>video.publish</code><p>Publish content directly to your profile once your app is approved for direct posting.</p></div>
+    </div>
+    <p class="lead" style="margin-top:30px;margin-bottom:0">We never post without your action, never add watermarks to your content, and never sell your data. Read our <a href="privacy.html" style="color:var(--brand2);font-weight:600">Privacy Policy</a> and <a href="terms.html" style="color:var(--brand2);font-weight:600">Terms of Service</a>.</p>
+  </div>
+</section>
+
+<section class="blk" id="faq">
+  <div class="wrap">
+    <div class="eyebrow">Questions</div>
+    <h2 class="h2">Frequently asked</h2>
+    <div class="faq">
+      <details open><summary>What does Affiliate Studio do?</summary><p>It's a dashboard for TikTok affiliate creators. You can create and schedule posts, publish them to TikTok through the official Content Posting API, scan products by commission and trend, and analyze the market with Market Radar.</p></details>
+      <details><summary>How do I sign in?</summary><p>You sign in with TikTok's official Login Kit (OAuth 2.0). There is no separate username or password — authentication is handled entirely by TikTok, and you can disconnect at any time to revoke access.</p></details>
+      <details><summary>Does it post to my account automatically?</summary><p>Only when you choose to. In draft mode, your clip is uploaded to your TikTok inbox and you finish publishing inside the TikTok app, keeping full control over caption and privacy.</p></details>
+      <details><summary>Is my data safe?</summary><p>We only request the minimum TikTok permissions needed, use them solely to carry out actions you request, and never sell your data. Drafts and schedules are stored on your own device. See our Privacy Policy for details.</p></details>
+      <details><summary>How much does it cost?</summary><p>You can connect your TikTok account and explore the dashboard at no cost. Contact us for details on availability in your region.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="blk">
+  <div class="wrap">
+    <div class="band">
+      <h2>Ready to work smarter on TikTok?</h2>
+      <p>Open the dashboard, connect your account, and start planning your next post.</p>
+      <a class="btn" href="https://affiliate-studio-app.onrender.com" target="_blank" rel="noopener">Open the Dashboard →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div class="col" style="max-width:320px">
+        <div class="logo" style="margin-bottom:12px"><span class="dot">⚡</span> Affiliate Studio</div>
+        <p>A publishing and market-research tool for TikTok affiliate creators. Built with the official TikTok APIs.</p>
+      </div>
+      <div class="col">
+        <h5>Product</h5>
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#permissions">Permissions</a>
+        <a href="https://affiliate-studio-app.onrender.com" target="_blank" rel="noopener">Open Dashboard</a>
+      </div>
+      <div class="col">
+        <h5>Legal</h5>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+      <div class="col">
+        <h5>Contact</h5>
+        <a href="mailto:ecommerce.productions66@gmail.com">ecommerce.productions66@gmail.com</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 Affiliate Studio. Not affiliated with or endorsed by TikTok. TikTok is a trademark of its respective owner.</div>
+  </div>
+</footer>
+
 </body>
 </html>
